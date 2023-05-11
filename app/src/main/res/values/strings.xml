@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">nkph361</string>
+    <string name="spinner_promt">Выберите город:</string>
+    <string name="toast_message">Ничего не выбрано</string>
+    <string name="USD_TEXT">USD</string>
+    <string name="EUR_TEXT">EUR</string>
+    <string name="RUB_TEXT">RUB</string>
+    <string name="BUY_TEXT">Покупка =\t</string>
+    <string name="SALE_TEXT">Продажа =\t</string>
+    <string name="BYN_TEXT">BYN</string>
+    <string-array name="cities">
+        <item>Брест</item>
+        <item>Витебск</item>
+        <item>Гомель</item>
+        <item>Гродно</item>
+        <item>Минск</item>
+        <item>Могилёв</item>
+    </string-array>
 </resources>
