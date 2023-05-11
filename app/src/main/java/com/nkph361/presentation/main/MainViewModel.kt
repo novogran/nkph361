@@ -1,4 +1,4 @@
-package com.nkph361.ui.main
+package com.nkph361.presentation.main
 
 import androidx.lifecycle.ViewModel
 

@@ -2,7 +2,7 @@ package com.nkph361
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.nkph361.ui.main.MainFragment
+import com.nkph361.presentation.main.MainFragment
 
 class MainActivity : AppCompatActivity() {
 
