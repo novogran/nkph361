@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.main.MainFragment">
+    tools:context=".presentation.UI.MainFragment">
 
     <Spinner
         android:id="@+id/cities_spinner"
@@ -46,7 +46,7 @@
             android:layout_marginBottom="16dp"
             android:textSize="16sp"
             app:layout_constraintLeft_toRightOf="@id/USD_text_view"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintRight_toRightOf="@id/exchange_rate_card"
             app:layout_constraintTop_toTopOf="@id/exchange_rate_card"
             tools:text="0.0" />
 
@@ -127,7 +127,7 @@
 
     <Button
         android:id="@+id/update_exchange_rate_button"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:background="@android:drawable/dialog_holo_light_frame"
@@ -153,9 +153,9 @@
         android:id="@+id/fail_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
         android:text="@string/error_message"
         android:textSize="16sp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

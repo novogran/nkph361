@@ -1,11 +1,10 @@
-package com.nkph361.presentation.main
+package com.nkph361.presentation.vm
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkph361.domain.ExchangeRateUseCase
-import com.nkph361.presentation.entity.ExchangeRateViewData
+import com.nkph361.presentation.model.ExchangeRateViewData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow

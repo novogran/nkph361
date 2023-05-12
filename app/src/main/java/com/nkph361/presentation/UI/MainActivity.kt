@@ -1,9 +1,8 @@
-package com.nkph361
+package com.nkph361.presentation.UI
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Spinner
-import com.nkph361.presentation.main.MainFragment
+import com.nkph361.R
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

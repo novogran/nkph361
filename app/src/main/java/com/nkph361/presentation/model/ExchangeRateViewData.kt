@@ -1,4 +1,4 @@
-package com.nkph361.presentation.entity
+package com.nkph361.presentation.model
 
 data class ExchangeRateViewData(
     val usdIn: Double = 0.0,

@@ -1,4 +1,4 @@
-package com.nkph361.presentation.main
+package com.nkph361.presentation
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
