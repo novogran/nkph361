@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -33,12 +34,12 @@ class MainFragment @Inject constructor() : Fragment(), AdapterView.OnItemSelecte
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
     }
 
-    @SuppressLint("UnsafeRepeatOnLifecycleDetector")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         val view = inflater.inflate(R.layout.fragment_main, container, false)
         val usdInTextView = view.findViewById<TextView>(R.id.USD_IN_text_view)
         val usdOutTextView = view.findViewById<TextView>(R.id.USD_OUT_text_view)
@@ -49,6 +50,8 @@ class MainFragment @Inject constructor() : Fragment(), AdapterView.OnItemSelecte
         val progress = view.findViewById<View>(R.id.progress_circular)
         val exchangeCard = view.findViewById<View>(R.id.exchange_rate_card)
         val spinner = view.findViewById<Spinner>(R.id.cities_spinner)
+        val updateButton = view.findViewById<Button>(R.id.update_exchange_rate_button)
+        val errorTextView = view.findViewById<TextView>(R.id.fail_text_view)
         val spinnerAdapter = ArrayAdapter.createFromResource(
             view.context,
             R.array.cities,
@@ -64,8 +67,12 @@ class MainFragment @Inject constructor() : Fragment(), AdapterView.OnItemSelecte
             prompt = getString(R.string.spinner_promt)
         }
 
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED) {
+        updateButton.setOnClickListener {
+            viewModel.loadData(city = spinner.selectedItem.toString())
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.exchangeRateStateFlow.collect {
                     usdInTextView.setText(R.string.BUY_TEXT)
                     usdOutTextView.setText(R.string.SALE_TEXT)
@@ -81,6 +88,7 @@ class MainFragment @Inject constructor() : Fragment(), AdapterView.OnItemSelecte
                     rubOutTextView.append(it.rubOut.toString().plus(getString(R.string.BYN_TEXT)))
                     exchangeCard.isVisible = it.loadStatus
                     progress.isVisible = it.inProgress
+                    errorTextView.isVisible = it.loadError
                 }
             }
         }
@@ -92,6 +100,5 @@ class MainFragment @Inject constructor() : Fragment(), AdapterView.OnItemSelecte
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
-        Toast.makeText(context, getString(R.string.toast_message), Toast.LENGTH_LONG).show()
     }
 }

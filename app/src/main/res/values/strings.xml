@@ -1,13 +1,14 @@
 <resources>
     <string name="app_name">nkph361</string>
     <string name="spinner_promt">Выберите\tгород:</string>
-    <string name="toast_message">Ничего\tне\tвыбрано</string>
     <string name="USD_TEXT">1USD</string>
     <string name="EUR_TEXT">1EUR</string>
     <string name="RUB_TEXT">100RUB</string>
     <string name="BUY_TEXT">Покупка\t=\t</string>
     <string name="SALE_TEXT">Продажа\t=\t</string>
     <string name="BYN_TEXT">BYN</string>
+    <string name="update_exchange_rate_button_text">Обновить курс валют</string>
+    <string name="error_message">Ошибка загрузки, попробуйте снова.</string>
     <string-array name="cities">
         <item>Брест</item>
         <item>Витебск</item>

@@ -26,12 +26,13 @@ class MainViewModel @Inject constructor() : ViewModel() {
         exchangeRateMutableStateFlow.asStateFlow()
 
     fun loadData(city: String) {
-        exchangeRateMutableStateFlow.value = ExchangeRateViewData(inProgress = true)
+        exchangeRateMutableStateFlow.value =
+            ExchangeRateViewData(
+                inProgress = true,
+                loadError = false
+            )
         viewModelScope.launch(Dispatchers.IO) {
             exchangeRateMutableStateFlow.value = try {
-                ExchangeRateViewData(
-                    inProgress = false
-                )
                 val exchangeRateEntity = exchangeRateUseCase.execute(city)
                 ExchangeRateViewData(
                     exchangeRateEntity.usdIn,
@@ -41,17 +42,12 @@ class MainViewModel @Inject constructor() : ViewModel() {
                     exchangeRateEntity.rubIn,
                     exchangeRateEntity.rubOut,
                     loadStatus = true,
-                    inProgress = false
+                    inProgress = false,
                 )
             } catch (e: Exception) {
                 Log.d("TAG", e.toString())
                 ExchangeRateViewData(
-                    usdIn = 1.0,
-                    usdOut = 1.0,
-                    eurIn = 1.0,
-                    eurOut = 1.0,
-                    rubIn = 1.0,
-                    rubOut = 1.0,
+                    loadError = true
                 )
             }
         }
