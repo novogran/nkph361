@@ -3,8 +3,6 @@ package com.nkph361.data.dto
 import com.google.gson.annotations.SerializedName
 
 data class ExchangeRateInfo(
-    @SerializedName("name")
-    val name: String,
     @SerializedName("USD_in")
     val usdIn: Double,
     @SerializedName("USD_out")

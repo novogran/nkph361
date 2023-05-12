@@ -1,26 +1,24 @@
 package com.nkph361.presentation.main
 
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.Lifecycle
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.nkph361.R
-import kotlinx.coroutines.flow.collect
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
+import javax.inject.Inject
 
-class MainFragment : Fragment(), AdapterView.OnItemSelectedListener {
+@AndroidEntryPoint
+class MainFragment @Inject constructor() : Fragment(), AdapterView.OnItemSelectedListener {
 
     companion object {
         fun newInstance() = MainFragment()
@@ -34,6 +32,7 @@ class MainFragment : Fragment(), AdapterView.OnItemSelectedListener {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
     }
 
+    @SuppressLint("UnsafeRepeatOnLifecycleDetector")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
