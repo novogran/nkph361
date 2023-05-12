@@ -7,4 +7,6 @@ data class ExchangeRateViewData(
     val eurOut: Double = 0.0,
     val rubIn: Double = 0.0,
     val rubOut: Double = 0.0,
+    val loadStatus: Boolean = false,
+    val inProgress: Boolean = false
 )

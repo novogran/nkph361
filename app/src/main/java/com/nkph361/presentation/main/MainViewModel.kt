@@ -7,13 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.nkph361.domain.ExchangeRateUseCase
 import com.nkph361.presentation.entity.ExchangeRateViewData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,9 +26,13 @@ class MainViewModel @Inject constructor() : ViewModel() {
         exchangeRateMutableStateFlow.asStateFlow()
 
     fun loadData(city: String) {
+        exchangeRateMutableStateFlow.value = ExchangeRateViewData(inProgress = true)
         viewModelScope.launch(Dispatchers.IO) {
             exchangeRateMutableStateFlow.value = try {
-                val exchangeRateEntity = viewModelScope.async { exchangeRateUseCase.execute(city) }.await()
+                ExchangeRateViewData(
+                    inProgress = false
+                )
+                val exchangeRateEntity = exchangeRateUseCase.execute(city)
                 ExchangeRateViewData(
                     exchangeRateEntity.usdIn,
                     exchangeRateEntity.usdOut,
@@ -39,10 +40,11 @@ class MainViewModel @Inject constructor() : ViewModel() {
                     exchangeRateEntity.eurOut,
                     exchangeRateEntity.rubIn,
                     exchangeRateEntity.rubOut,
+                    loadStatus = true,
+                    inProgress = false
                 )
             } catch (e: Exception) {
                 Log.d("TAG", e.toString())
-//                Toast.makeText(conte, "Ошибка загрузки данных", Toast.LENGTH_LONG)
                 ExchangeRateViewData(
                     usdIn = 1.0,
                     usdOut = 1.0,

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -45,6 +46,8 @@ class MainFragment @Inject constructor() : Fragment(), AdapterView.OnItemSelecte
         val eurOutTextView = view.findViewById<TextView>(R.id.EUR_OUT_text_view)
         val rubInTextView = view.findViewById<TextView>(R.id.RUB_IN_text_view)
         val rubOutTextView = view.findViewById<TextView>(R.id.RUB_OUT_text_view)
+        val progress = view.findViewById<View>(R.id.progress_circular)
+        val exchangeCard = view.findViewById<View>(R.id.exchange_rate_card)
         val spinner = view.findViewById<Spinner>(R.id.cities_spinner)
         val spinnerAdapter = ArrayAdapter.createFromResource(
             view.context,
@@ -76,6 +79,8 @@ class MainFragment @Inject constructor() : Fragment(), AdapterView.OnItemSelecte
                     eurOutTextView.append(it.eurOut.toString().plus(getString(R.string.BYN_TEXT)))
                     rubInTextView.append(it.rubIn.toString().plus(getString(R.string.BYN_TEXT)))
                     rubOutTextView.append(it.rubOut.toString().plus(getString(R.string.BYN_TEXT)))
+                    exchangeCard.isVisible = it.loadStatus
+                    progress.isVisible = it.inProgress
                 }
             }
         }
