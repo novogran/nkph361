@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.nkph361.R
+import com.nkph361.databinding.FragmentMainBinding
 import com.nkph361.presentation.vm.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -26,6 +27,8 @@ class MainFragment @Inject constructor() : Fragment(), AdapterView.OnItemSelecte
     }
 
     private lateinit var viewModel: MainViewModel
+    private var _binding: FragmentMainBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,18 +42,8 @@ class MainFragment @Inject constructor() : Fragment(), AdapterView.OnItemSelecte
         savedInstanceState: Bundle?
     ): View {
 
-        val view = inflater.inflate(R.layout.fragment_main, container, false)
-        val usdInTextView = view.findViewById<TextView>(R.id.USD_IN_text_view)
-        val usdOutTextView = view.findViewById<TextView>(R.id.USD_OUT_text_view)
-        val eurInTextView = view.findViewById<TextView>(R.id.EUR_IN_text_view)
-        val eurOutTextView = view.findViewById<TextView>(R.id.EUR_OUT_text_view)
-        val rubInTextView = view.findViewById<TextView>(R.id.RUB_IN_text_view)
-        val rubOutTextView = view.findViewById<TextView>(R.id.RUB_OUT_text_view)
-        val progress = view.findViewById<View>(R.id.progress_circular)
-        val exchangeCard = view.findViewById<View>(R.id.exchange_rate_card)
-        val spinner = view.findViewById<Spinner>(R.id.cities_spinner)
-        val updateButton = view.findViewById<Button>(R.id.update_exchange_rate_button)
-        val errorTextView = view.findViewById<TextView>(R.id.fail_text_view)
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        val view = binding.root
         val spinnerAdapter = ArrayAdapter.createFromResource(
             view.context,
             R.array.cities,
@@ -58,7 +51,7 @@ class MainFragment @Inject constructor() : Fragment(), AdapterView.OnItemSelecte
         )
 
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        with(spinner) {
+        with(binding.citiesSpinner) {
             adapter = spinnerAdapter
             setSelection(0, false)
             onItemSelectedListener = this@MainFragment
@@ -66,28 +59,28 @@ class MainFragment @Inject constructor() : Fragment(), AdapterView.OnItemSelecte
             prompt = getString(R.string.spinner_promt)
         }
 
-        updateButton.setOnClickListener {
-            viewModel.loadData(city = spinner.selectedItem.toString())
+        binding.updateExchangeRateButton.setOnClickListener {
+            viewModel.loadData(city = binding.citiesSpinner.selectedItem.toString())
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.exchangeRateStateFlow.collect {
-                    usdInTextView.setText(R.string.BUY_TEXT)
-                    usdOutTextView.setText(R.string.SALE_TEXT)
-                    eurInTextView.setText(R.string.BUY_TEXT)
-                    eurOutTextView.setText(R.string.SALE_TEXT)
-                    rubInTextView.setText(R.string.BUY_TEXT)
-                    rubOutTextView.setText(R.string.SALE_TEXT)
-                    usdInTextView.append(it.usdIn.toString().plus(getString(R.string.BYN_TEXT)))
-                    usdOutTextView.append(it.usdOut.toString().plus(getString(R.string.BYN_TEXT)))
-                    eurInTextView.append(it.eurIn.toString().plus(getString(R.string.BYN_TEXT)))
-                    eurOutTextView.append(it.eurOut.toString().plus(getString(R.string.BYN_TEXT)))
-                    rubInTextView.append(it.rubIn.toString().plus(getString(R.string.BYN_TEXT)))
-                    rubOutTextView.append(it.rubOut.toString().plus(getString(R.string.BYN_TEXT)))
-                    exchangeCard.isVisible = it.loadStatus
-                    progress.isVisible = it.inProgress
-                    errorTextView.isVisible = it.loadError
+                    binding.USDINTextView.setText(R.string.BUY_TEXT)
+                    binding.USDOUTTextView.setText(R.string.SALE_TEXT)
+                    binding.EURINTextView.setText(R.string.BUY_TEXT)
+                    binding.EUROUTTextView.setText(R.string.SALE_TEXT)
+                    binding.RUBINTextView.setText(R.string.BUY_TEXT)
+                    binding.RUBOUTTextView.setText(R.string.SALE_TEXT)
+                    binding.USDINTextView.append(it.usdIn.toString().plus(getString(R.string.BYN_TEXT)))
+                    binding.USDOUTTextView.append(it.usdOut.toString().plus(getString(R.string.BYN_TEXT)))
+                    binding.EURINTextView.append(it.eurIn.toString().plus(getString(R.string.BYN_TEXT)))
+                    binding.EUROUTTextView.append(it.eurOut.toString().plus(getString(R.string.BYN_TEXT)))
+                    binding.RUBINTextView.append(it.rubIn.toString().plus(getString(R.string.BYN_TEXT)))
+                    binding.RUBOUTTextView.append(it.rubOut.toString().plus(getString(R.string.BYN_TEXT)))
+                    binding.exchangeRateCard.isVisible = it.loadStatus
+                    binding.progressCircular.isVisible = it.inProgress
+                    binding.failTextView.isVisible = it.loadError
                 }
             }
         }
@@ -99,5 +92,10 @@ class MainFragment @Inject constructor() : Fragment(), AdapterView.OnItemSelecte
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
