@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkph361.domain.ExchangeRateUseCase
+import com.nkph361.presentation.mapper.ExchangeRateEntityMapper
 import com.nkph361.presentation.model.ExchangeRateViewData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -13,7 +14,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor() : ViewModel() {
+class MainViewModel @Inject constructor(
+    private val exchangeRateEntityMapper: ExchangeRateEntityMapper
+) : ViewModel() {
 
     @Inject
     lateinit var exchangeRateUseCase: ExchangeRateUseCase
@@ -32,17 +35,7 @@ class MainViewModel @Inject constructor() : ViewModel() {
             )
         viewModelScope.launch(Dispatchers.IO) {
             exchangeRateMutableStateFlow.value = try {
-                val exchangeRateEntity = exchangeRateUseCase.execute(city)
-                ExchangeRateViewData(
-                    exchangeRateEntity.usdIn,
-                    exchangeRateEntity.usdOut,
-                    exchangeRateEntity.eurIn,
-                    exchangeRateEntity.eurOut,
-                    exchangeRateEntity.rubIn,
-                    exchangeRateEntity.rubOut,
-                    loadStatus = true,
-                    inProgress = false,
-                )
+                exchangeRateEntityMapper.map(exchangeRateUseCase.execute(city))
             } catch (e: Exception) {
                 Log.d("TAG", e.toString())
                 ExchangeRateViewData(
