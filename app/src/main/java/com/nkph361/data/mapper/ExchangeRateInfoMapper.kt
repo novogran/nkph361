@@ -1,6 +1,6 @@
 package com.nkph361.data.mapper
 
-import com.nkph361.Mapper
+import com.nkph361.comm.Mapper
 import com.nkph361.data.dto.ExchangeRateInfo
 import com.nkph361.domain.entity.ExchangeRateEntity
 import javax.inject.Inject

@@ -1,15 +1,15 @@
 package com.nkph361.presentation.mapper
 
 import com.nkph361.comm.Mapper
-import com.nkph361.domain.entity.ExchangeRateEntity
 import com.nkph361.presentation.model.ExchangeRateModel
+import com.nkph361.presentation.ui.state.MainFragmentUiState
 import javax.inject.Inject
 
-class ExchangeRateEntityMapper @Inject constructor() :
-    Mapper<ExchangeRateEntity, ExchangeRateModel> {
-    override fun map(from: ExchangeRateEntity) = ExchangeRateModel(
+class MainFragmentUiStateMapper @Inject constructor() :
+    Mapper<ExchangeRateModel, MainFragmentUiState> {
+    override fun map(from: ExchangeRateModel) = MainFragmentUiState(
         usdIn = from.usdIn,
-        usdOut = from.usdOut,
+        usdOut = from.eurOut,
         eurIn = from.eurIn,
         eurOut = from.eurOut,
         rubIn = from.rubIn,

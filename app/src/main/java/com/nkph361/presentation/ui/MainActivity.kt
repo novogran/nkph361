@@ -1,4 +1,4 @@
-package com.nkph361.presentation.UI
+package com.nkph361.presentation.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
