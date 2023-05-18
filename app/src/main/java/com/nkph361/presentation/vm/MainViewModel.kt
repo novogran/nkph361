@@ -3,6 +3,8 @@ package com.nkph361.presentation.vm
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nkph361.DI.IoDispatcher
+import com.nkph361.DI.MainDispatcher
 import com.nkph361.domain.ExchangeRateUseCase
 import com.nkph361.presentation.mapper.ExchangeRateEntityMapper
 import com.nkph361.presentation.mapper.MainFragmentUiStateMapper
@@ -19,13 +21,12 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val exchangeRateEntityMapper: ExchangeRateEntityMapper,
     private val mainFragmentUiStateMapper: MainFragmentUiStateMapper,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    @MainDispatcher private val mainDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     @Inject
     lateinit var exchangeRateUseCase: ExchangeRateUseCase
-
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-    private val mainDispatcher: CoroutineDispatcher = Dispatchers.Main
 
     private var _mainFragmentUiState =
         MutableStateFlow(MainFragmentUiState())
