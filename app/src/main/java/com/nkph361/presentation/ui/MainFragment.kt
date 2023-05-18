@@ -1,4 +1,4 @@
-package com.nkph361.presentation.UI
+package com.nkph361.presentation.ui
 
 import android.os.Bundle
 import android.view.Gravity
@@ -65,26 +65,47 @@ class MainFragment @Inject constructor() : Fragment(), AdapterView.OnItemSelecte
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.exchangeRateStateFlow.collect {
-                    binding.USDINTextView.setText(R.string.BUY_TEXT)
-                    binding.USDOUTTextView.setText(R.string.SALE_TEXT)
-                    binding.EURINTextView.setText(R.string.BUY_TEXT)
-                    binding.EUROUTTextView.setText(R.string.SALE_TEXT)
-                    binding.RUBINTextView.setText(R.string.BUY_TEXT)
-                    binding.RUBOUTTextView.setText(R.string.SALE_TEXT)
-                    binding.USDINTextView.append(it.usdIn.toString().plus(getString(R.string.BYN_TEXT)))
-                    binding.USDOUTTextView.append(it.usdOut.toString().plus(getString(R.string.BYN_TEXT)))
-                    binding.EURINTextView.append(it.eurIn.toString().plus(getString(R.string.BYN_TEXT)))
-                    binding.EUROUTTextView.append(it.eurOut.toString().plus(getString(R.string.BYN_TEXT)))
-                    binding.RUBINTextView.append(it.rubIn.toString().plus(getString(R.string.BYN_TEXT)))
-                    binding.RUBOUTTextView.append(it.rubOut.toString().plus(getString(R.string.BYN_TEXT)))
-                    binding.exchangeRateCard.isVisible = it.loadStatus
-                    binding.progressCircular.isVisible = it.inProgress
-                    binding.failTextView.isVisible = it.loadError
+                viewModel.mainFragmentUiState.collect { uiState ->
+
+                    setDefaultText()
+
+                    binding.USDINTextView.append(
+                        uiState.usdIn.toTextWithBynEnding()
+                    )
+                    binding.USDOUTTextView.append(
+                        uiState.usdOut.toTextWithBynEnding()
+                    )
+                    binding.EURINTextView.append(
+                        uiState.eurIn.toTextWithBynEnding()
+                    )
+                    binding.EUROUTTextView.append(
+                        uiState.eurOut.toTextWithBynEnding()
+                    )
+                    binding.RUBINTextView.append(
+                        uiState.rubIn.toTextWithBynEnding()
+                    )
+                    binding.RUBOUTTextView.append(
+                        uiState.rubOut.toTextWithBynEnding()
+                    )
+                    binding.exchangeRateCard.isVisible = uiState.loadComplete
+                    binding.progressCircular.isVisible = uiState.loadInProgress
+                    binding.failTextView.isVisible = uiState.loadError
                 }
             }
         }
         return view
+    }
+
+    private fun Double.toTextWithBynEnding() =
+        toString().plus(getString(R.string.BYN_TEXT))
+
+    private fun setDefaultText() {
+        binding.USDINTextView.setText(R.string.BUY_TEXT)
+        binding.USDOUTTextView.setText(R.string.SALE_TEXT)
+        binding.EURINTextView.setText(R.string.BUY_TEXT)
+        binding.EUROUTTextView.setText(R.string.SALE_TEXT)
+        binding.RUBINTextView.setText(R.string.BUY_TEXT)
+        binding.RUBOUTTextView.setText(R.string.SALE_TEXT)
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
