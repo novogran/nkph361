@@ -35,6 +35,8 @@ class MainViewModel @Inject constructor(
 
     fun loadData(city: String) {
 
+        if (city == _mainFragmentUiState.value.city) return
+
         _mainFragmentUiState.update { currentState ->
             currentState.copy(
                 loadComplete = false,
@@ -66,7 +68,10 @@ class MainViewModel @Inject constructor(
             } catch (e: Exception) {
                 Log.d("TAG", e.toString())
                 _mainFragmentUiState.update { currentState ->
-                    currentState.copy(loadError = true)
+                    currentState.copy(
+                        loadInProgress = false,
+                        loadError = true
+                    )
                 }
             }
         }
